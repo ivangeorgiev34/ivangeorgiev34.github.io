@@ -1,7 +1,7 @@
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
-const { optimize } = require("webpack");
 
 module.exports = {
   entry: "./src/index.js",
@@ -20,7 +20,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
     ],
   },
@@ -33,6 +33,11 @@ module.exports = {
       new CssMinimizerPlugin(),
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "styles.css",
+    }),
+  ],
   devServer: {
     static: {
       directory: path.resolve(__dirname, "dist"),
